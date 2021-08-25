@@ -1,8 +1,9 @@
+import './App.css';
+import RequestForm from './components/RequestForm';
+
 function App() {
   return (
-    <div className="App">
-      Ethereum Fullstack Template
-    </div>
+    <RequestForm></RequestForm>
   );
 }
 
