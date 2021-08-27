@@ -15,13 +15,13 @@ function RequestForm() {
 
     async function handleGetEther() {
         setRequestLoading(true);
-        await getEther(constants.FAUCET_ADDR, EthereumFaucet, etherReq, walletAddr);
+        await getEther(process.env.DEPLOYED_ADDRESS, EthereumFaucet, etherReq, walletAddr);
         setRequestLoading(false);
     }
 
     async function handleDonateEther() {
         setDonateLoading(true);
-        await donateEther(constants.FAUCET_ADDR, EthereumFaucet, etherDonate);
+        await donateEther(process.env.DEPLOYED_ADDRESS, EthereumFaucet, etherDonate);
         setDonateLoading(false);
     }
 
