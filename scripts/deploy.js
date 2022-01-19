@@ -31,6 +31,7 @@ function saveFrontendFiles(faucet) {
 }
 
 function updateEnvWithDeployedAddress(deployedAddress) {
+	const fs = require("fs");
 	const result = require('dotenv').config()
 	if (result.error) {
 		throw result.error
