@@ -1,59 +1,43 @@
 const hre = require("hardhat");
 
 async function main() {
-    const [deployer] = await hre.ethers.getSigners();
+	const [deployer] = await hre.ethers.getSigners();
 
-    const EthereumFaucet = await hre.ethers.getContractFactory("EthereumFaucet");
-    const faucet = await EthereumFaucet.deploy();
+	const EthereumFaucet = await hre.ethers.getContractFactory(
+		"EthereumFaucet"
+	);
+	const faucet = await EthereumFaucet.deploy();
 
-    await faucet.deployed();
-    console.log(`Ethereum faucet deployed to address: ${faucet.address}`);
-    updateEnvWithDeployedAddress(faucet.address);
+	await faucet.deployed();
+	console.log(`Ethereum faucet deployed to address: ${faucet.address}`);
 
-    // We also save the contract's artifacts and address in the proper directory
-    saveFrontendFiles(faucet);
+	saveFrontendFiles(faucet);
 }
 
-function saveFrontendFiles(faucet) {
-    const fs = require("fs");
-    const contractsDir = __dirname + "/../src/abis";
-  
-    if (!fs.existsSync(contractsDir)) {
-      fs.mkdirSync(contractsDir);
-    }
-  
-    const FaucetArtifact = artifacts.readArtifactSync("EthereumFaucet");
-  
-    fs.writeFileSync(
-      contractsDir + "/EthereumFaucet.json",
-      JSON.stringify(FaucetArtifact, null, 2)
-    );
-}
-
-function updateEnvWithDeployedAddress(deployedAddress) {
+function saveFrontendFiles(contract) {
 	const fs = require("fs");
-	const result = require('dotenv').config()
-	if (result.error) {
-		throw result.error
-	}
-	result.parsed.DEPLOYED_ADDRESS = deployedAddress;
-	fs.writeFileSync('./.env', stringify(result.parsed)) 
-}
+	const contractsDir = __dirname + "/../src/abis";
 
-function stringify(obj) {
-	let result = ''
-	for (const [key, value] of Object.entries(obj)) {
-		if (key) {
-			const line = `${key}=${String(value)}`
-			result += line + '\n'
-		}
+	if (!fs.existsSync(contractsDir)) {
+		fs.mkdirSync(contractsDir);
 	}
-	return result
+
+	fs.writeFileSync(
+		contractsDir + "/contract-address.json",
+		JSON.stringify({ FaucetContractAddr: contract.address }, undefined, 2)
+	);
+
+	const FaucetArtifact = artifacts.readArtifactSync("EthereumFaucet");
+
+	fs.writeFileSync(
+		contractsDir + "/EthereumFaucet.json",
+		JSON.stringify(FaucetArtifact, null, 2)
+	);
 }
 
 main()
-    .then(() => process.exit(0))
-    .catch(error => {
-        console.log(error);
-        process.exit(1);
-    });
+	.then(() => process.exit(0))
+	.catch((error) => {
+		console.log(error);
+		process.exit(1);
+	});

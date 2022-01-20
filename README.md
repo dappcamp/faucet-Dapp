@@ -20,7 +20,7 @@
 
     `npx hardhat run scripts/deploy.js --network localhost`
 
-3. The deployed contract address will be printed to console and will also be automatically be copied to `.env` inside the root directory.
+3. The deployed contract address will be printed to console and will also be automatically be copied to `src/abis/contract-address.json`.
 
 4. Connect hardhat node to Metamask
 
